@@ -39,9 +39,9 @@ int Client::run(int argc, char* argv[])
 {
     signal(SIGINT, sig_handler);
 
-    int size = 256;
+    long size = 256;
     if(argc > 1)
-        size = std::atof(argv[1]);
+        size = std::atol(argv[1]);
 
 	std::cout << "Using size " << size << std::endl;
 
@@ -55,7 +55,7 @@ int Client::run(int argc, char* argv[])
 
 	// creating the packet
     CIWS::Packet packet;
-    for(int i=0; i<size; i++)
+    for(long i=0; i<size; i++)
     {
         packet.push_back((char)(i%8));
     }
