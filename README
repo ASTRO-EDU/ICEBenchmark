@@ -1,0 +1,14 @@
+- To run the server you need only to execute:
+    python Server.py
+
+- To run the client you need for example:
+$ make
+$ ./client 128000
+where 128000 is the sequence size parameter.
+
+Then type CTRL+C to SIGINT the client and get the throughput statistics.
+The output is something like:
+
+17292 number of sequences * 500000 sequence size * 8 bit 
+---------------------------------------------------------- = 5613.57 Mbps
+           12.321567 seconds * 1000000
