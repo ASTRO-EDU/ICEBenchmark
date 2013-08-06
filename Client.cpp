@@ -31,10 +31,13 @@ void sig_handler(int signo)
 
     if (signo == SIGINT)
 	{
-        tm = IceUtil::Time::now(IceUtil::Time::Monotonic) - tm;
+		tm = IceUtil::Time::now(IceUtil::Time::Monotonic) - tm;
 		double mbit = counter * size * 8 / (tm.toSecondsDouble() * 1000000);
-		std::cout << "Throughput: " << mbit << " mbps" << std::endl;
-        exit(1);
+		std::cout << std::endl;
+		std::cout << counter << " number of sequences * " << size << " sequence size * 8 bit " << std::endl;
+		std::cout << "---------------------------------------------------------- = " << mbit << " Mbps" << std::endl;
+		std::cout << "           " << std::fixed << tm.toSecondsDouble() << " seconds * 1000000" << std::endl;
+		exit(1);
 	}
 }
 
