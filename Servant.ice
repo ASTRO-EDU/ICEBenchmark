@@ -22,6 +22,6 @@ module CIWS
 
     interface Servant
     {
-        idempotent void newPacket(Packet p);
+        void newPacket(["cpp:array"] Packet p);
     };
 };

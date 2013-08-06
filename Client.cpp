@@ -22,13 +22,20 @@
 #include<cstdlib>
 #include<signal.h>
 
-int counter=0;
+int counter;
+IceUtil::Time tm;
+long size;
 
 void sig_handler(int signo)
 {
+
     if (signo == SIGINT)
-        std::cout<< "counter = " << counter << std::endl;
-	exit(1);
+	{
+        tm = IceUtil::Time::now(IceUtil::Time::Monotonic) - tm;
+		double mbit = counter * size * 8 / (tm.toSecondsDouble() * 1000000);
+		std::cout << "Throughput: " << mbit << " mbps" << std::endl;
+        exit(1);
+	}
 }
 
 Client::Client() : Ice::Application(Ice::NoSignalHandling)
@@ -39,7 +46,8 @@ int Client::run(int argc, char* argv[])
 {
     signal(SIGINT, sig_handler);
 
-    long size = 256;
+	counter = 0;
+	size = 128000;
     if(argc > 1)
         size = std::atol(argv[1]);
 
@@ -50,6 +58,7 @@ int Client::run(int argc, char* argv[])
     // creating a Servant proxy
     Ice::ObjectPrx objPrx = ic->propertyToProxy("Host.proxy");
     CIWS::ServantPrx servantPrx = CIWS::ServantPrx::checkedCast(objPrx);
+	CIWS::ServantPrx onewayPrx = servantPrx->ice_oneway();
     if(!servantPrx)
         throw "Invalid Proxy";
 
@@ -60,10 +69,14 @@ int Client::run(int argc, char* argv[])
         packet.push_back((char)(i%8));
     }
 
+    tm = IceUtil::Time::now(IceUtil::Time::Monotonic);
     while(1)
 	{
 		counter++;
-        servantPrx->newPacket(packet);
+		std::pair<const Ice::Byte*, const Ice::Byte*> p;
+		p.first = &packet[0];
+		p.second = p.first + packet.size();
+        onewayPrx->newPacket(p);
 	}
 
     return EXIT_SUCCESS;
