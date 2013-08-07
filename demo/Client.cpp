@@ -155,7 +155,7 @@ ThroughputClient::run(int argc, char* argv[])
             cin >> c;
 
             IceUtil::Time tm = IceUtil::Time::now(IceUtil::Time::Monotonic);
-			const long size = 100000000;
+			const long size = 10000000000; //10G
             const int repetitions = (double)size / (double)seqSize;
 
             if(c == '1' || c == '2' || c == '3' || c == '4')

@@ -28,3 +28,5 @@ IceSSL.KeyFile=s_rsa1024_priv.pem
 Ice.Admin.InstanceName=server
 IceMX.Metrics.Debug.GroupBy=id
 IceMX.Metrics.ByParent.GroupBy=parent
+
+Ice.ThreadPool.Server.Size=1
